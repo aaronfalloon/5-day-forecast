@@ -2,6 +2,7 @@ import chai from 'chai';
 import jsdomGlobal from 'jsdom-global';
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
+import _ from 'lodash';
 import { requestForecast, receiveForecast, fetchForecast, REQUEST_FORECAST,
   RECEIVE_FORECAST } from '../../src/client/actions';
 import successResponse from './doubles/success-response.json';
@@ -65,15 +66,24 @@ suite('actions', function() {
       expect(fetchForecast()(this.dispatch)).to.be.instanceOf(Promise);
     });
 
-    test('converts the response to JSON and dispatches a RECEIVE_FORECAST action with it', function() {
+    test('converts the response to a JSON object with the predictions grouped by day', function() {
       const fetchingForecast = fetchForecast()(this.dispatch);
 
       return fetchingForecast
         .then(() => {
-          expect(this.dispatch.withArgs({
-            type: RECEIVE_FORECAST,
-            forecast: successResponse,
-          })).to.be.calledOnce;
+          expect(_.keys(this.dispatch.args[1][0].forecast.list).length).to.equal(5);
+        })
+        .catch((err) => {
+          throw err;
+        });
+    });
+
+    test('dispatches a RECEIVE_FORECAST action with it', function() {
+      const fetchingForecast = fetchForecast()(this.dispatch);
+
+      return fetchingForecast
+        .then(() => {
+          expect(this.dispatch.args[1][0].type).to.equal(RECEIVE_FORECAST);
         })
         .catch((err) => {
           throw err;

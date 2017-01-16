@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export const REQUEST_FORECAST = 'REQUEST_FORECAST';
 export function requestForecast() {
   return {
@@ -19,6 +21,14 @@ export function fetchForecast() {
 
     return window.fetch('http://api.openweathermap.org/data/2.5/forecast?q=Belfast,uk&mode=json&appid=9ef33d97507fd25be6f8aac5fc41f5b0')
       .then(res => res.json())
-      .then(json => dispatch(receiveForecast(json)));
+      .then((json) => {
+        // Group by date
+        const predictionsByDay =
+          _.groupBy(json.list, prediction => prediction.dt_txt.substr(0, 10));
+
+        dispatch(receiveForecast(_.assignIn(_.cloneDeep(json), {
+          list: predictionsByDay,
+        })));
+      });
   };
 }
