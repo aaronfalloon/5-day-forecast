@@ -5,9 +5,11 @@
 # To run the app
 
 1. `git clone git@github.com:aaronfalloon/5-day-forecast.git`
-2. `cd 5-day-forecast`
-3. `npm run build`
-4. `npm run serve`
+2. `npm install`
+3. `cd 5-day-forecast`
+4. `npm run build`
+5. `npm run serve`
+6. Go to [http://localhost:3000/](http://localhost:3000/)
 
 # To run the tests
 
@@ -25,7 +27,7 @@
 * Store built.js in a more appropriate place
 * Compile built.js on push to Heroku instead of committing it to the repo
 * Use .jsx for files that contain JSX
-* A loader for before the forecast is fetched
+* A UI loader for before the forecast is fetched
 * Add props validation
 * A better UI and UX
 * Unit tests for the UI components
