@@ -9,12 +9,12 @@ export default (props) => {
   }
 
   return (
-    <div>
+    <div className="container-fluid">
       <h1>Forecast for {props.forecast.city.name}</h1>
-      <ul>
+      <div className="row">
         {
           _.map(props.forecast.list, ((predictions, date) =>
-            <li className="day">
+            <div className="day col">
               <h2>{date}</h2>
               <ul>
                 {
@@ -27,10 +27,10 @@ export default (props) => {
                   )
                 }
               </ul>
-            </li>
+            </div>
           ))
         }
-      </ul>
+      </div>
     </div>
   );
 };
