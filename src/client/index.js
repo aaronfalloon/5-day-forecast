@@ -6,6 +6,7 @@ import React from 'react';
 import rootReducer from './reducers';
 import { fetchForecast } from './actions';
 import App from './components/App';
+import './main.scss';
 
 const store = createStore(
   rootReducer,
