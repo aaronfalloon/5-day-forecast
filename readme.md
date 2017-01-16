@@ -31,3 +31,5 @@
 * Add props validation
 * A better UI and UX
 * Unit tests for the UI components
+* Break a Prediction component out of the Forecast component
+* Use centigrade for temperature unit

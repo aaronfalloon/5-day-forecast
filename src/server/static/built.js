@@ -66,7 +66,7 @@
 
 	var _actions = __webpack_require__(218);
 
-	var _App = __webpack_require__(219);
+	var _App = __webpack_require__(220);
 
 	var _App2 = _interopRequireDefault(_App);
 
@@ -23791,16 +23791,24 @@
 
 /***/ },
 /* 218 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.RECEIVE_FORECAST = exports.REQUEST_FORECAST = undefined;
 	exports.requestForecast = requestForecast;
 	exports.receiveForecast = receiveForecast;
 	exports.fetchForecast = fetchForecast;
+
+	var _lodash = __webpack_require__(219);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	var REQUEST_FORECAST = exports.REQUEST_FORECAST = 'REQUEST_FORECAST';
 	function requestForecast() {
 	  return {
@@ -23823,107 +23831,20 @@
 	    return window.fetch('http://api.openweathermap.org/data/2.5/forecast?q=Belfast,uk&mode=json&appid=9ef33d97507fd25be6f8aac5fc41f5b0').then(function (res) {
 	      return res.json();
 	    }).then(function (json) {
-	      return dispatch(receiveForecast(json));
+	      // Group by date
+	      var predictionsByDay = _lodash2.default.groupBy(json.list, function (prediction) {
+	        return prediction.dt_txt.substr(0, 10);
+	      });
+
+	      dispatch(receiveForecast(_lodash2.default.assignIn(_lodash2.default.cloneDeep(json), {
+	        list: predictionsByDay
+	      })));
 	    });
 	  };
 	}
 
 /***/ },
 /* 219 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _reactRedux = __webpack_require__(199);
-
-	var _Forecast = __webpack_require__(220);
-
-	var _Forecast2 = _interopRequireDefault(_Forecast);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	/**
-	 * Responsible for passing the forecast data to the Forecast component
-	 */
-	exports.default = (0, _reactRedux.connect)(function (state) {
-	  return {
-	    forecast: state
-	  };
-	})(_Forecast2.default);
-
-/***/ },
-/* 220 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(201);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _lodash = __webpack_require__(221);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = function (props) {
-	  if (!_lodash2.default.isArray(props.forecast.list)) {
-	    return _react2.default.createElement('div', null);
-	  }
-
-	  return _react2.default.createElement(
-	    'div',
-	    null,
-	    _react2.default.createElement(
-	      'h1',
-	      null,
-	      'Forecast for ',
-	      props.forecast.city.name
-	    ),
-	    _react2.default.createElement(
-	      'ul',
-	      null,
-	      props.forecast.list.map(function (recording) {
-	        return _react2.default.createElement(
-	          'li',
-	          null,
-	          _react2.default.createElement(
-	            'h2',
-	            null,
-	            recording.dt_txt
-	          ),
-	          _react2.default.createElement(
-	            'ul',
-	            null,
-	            _react2.default.createElement(
-	              'li',
-	              null,
-	              recording.weather[0].description
-	            ),
-	            _react2.default.createElement(
-	              'li',
-	              null,
-	              'Temperature ',
-	              recording.main.temp
-	            )
-	          )
-	        );
-	      })
-	    )
-	  );
-	};
-
-/***/ },
-/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -41012,6 +40933,114 @@
 	}.call(this));
 
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(17)(module)))
+
+/***/ },
+/* 220 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _reactRedux = __webpack_require__(199);
+
+	var _Forecast = __webpack_require__(221);
+
+	var _Forecast2 = _interopRequireDefault(_Forecast);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * Responsible for passing the forecast data to the Forecast component
+	 */
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	  return {
+	    forecast: state
+	  };
+	})(_Forecast2.default);
+
+/***/ },
+/* 221 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(201);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _lodash = __webpack_require__(219);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (props) {
+	  if (!_lodash2.default.isObject(props.forecast.list)) {
+	    return _react2.default.createElement('div', null);
+	  }
+
+	  console.log(props.forecast);
+
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement(
+	      'h1',
+	      null,
+	      'Forecast for ',
+	      props.forecast.city.name
+	    ),
+	    _react2.default.createElement(
+	      'ul',
+	      null,
+	      _lodash2.default.map(props.forecast.list, function (predictions, date) {
+	        return _react2.default.createElement(
+	          'li',
+	          null,
+	          _react2.default.createElement(
+	            'h2',
+	            null,
+	            date
+	          ),
+	          _react2.default.createElement(
+	            'ul',
+	            null,
+	            _lodash2.default.map(predictions, function (prediction) {
+	              return _react2.default.createElement(
+	                'li',
+	                null,
+	                _react2.default.createElement(
+	                  'h3',
+	                  null,
+	                  prediction.dt_txt.substr(10)
+	                ),
+	                _react2.default.createElement(
+	                  'p',
+	                  null,
+	                  prediction.weather[0].description
+	                ),
+	                _react2.default.createElement(
+	                  'p',
+	                  null,
+	                  'Temperature ',
+	                  prediction.main.temp,
+	                  'k'
+	                )
+	              );
+	            })
+	          )
+	        );
+	      })
+	    )
+	  );
+	};
 
 /***/ },
 /* 222 */
