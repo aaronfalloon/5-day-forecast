@@ -9,3 +9,6 @@
 * Include a polyfill for fetch()
 * Store built.js in a more appropriate place
 * Compile built.js on push to Heroku instead of committing it to the repo
+* Use .jsx for files that contain JSX
+* A loader for before the forecast is fetched
+* Add props validation
