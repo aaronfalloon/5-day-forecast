@@ -7,3 +7,5 @@
 * Clean up ESLint errors
 * Add unit tests for client/index.js
 * Include a polyfill for fetch()
+* Store built.js in a more appropriate place
+* Compile built.js on push to Heroku instead of committing it to the repo

@@ -3,8 +3,10 @@ const path = require('path');
 
 const app = express();
 
+app.use(express.static(path.join(__dirname, 'static')))
+
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
+  res.sendFile(path.join(__dirname, '..', 'server', 'index.html'));
 });
 
 // Allow Heroku to set the port
