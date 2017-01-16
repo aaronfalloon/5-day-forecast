@@ -1,4 +1,19 @@
-# Todos
+# To view live
+
+[On Heroku](http://vast-beach-39095.herokuapp.com/)
+
+# To run the app
+
+1. `git clone git@github.com:aaronfalloon/5-day-forecast.git`
+2. `cd 5-day-forecast`
+3. `npm run build`
+4. `npm run serve`
+
+# To run the tests
+
+`npm test`
+
+# Todos (with more time)
 
 * Display a basic 5-day forecast for users that have JS disabled
 * Unit tests for the server
@@ -12,3 +27,5 @@
 * Use .jsx for files that contain JSX
 * A loader for before the forecast is fetched
 * Add props validation
+* A better UI and UX
+* Unit tests for the UI components
