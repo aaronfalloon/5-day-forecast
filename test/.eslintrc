@@ -1,0 +1,13 @@
+{
+  "extends": "airbnb",
+  "globals": {
+    "suite": true,
+    "test": true,
+    "setup": true,
+    "teardown": true
+  },
+  "rules": {
+    "prefer-arrow-callback": 0,
+    "func-names": 0
+  }
+}
